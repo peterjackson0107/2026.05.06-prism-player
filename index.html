@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>PRISM Dual Action YouTube Icon</title>
+
+<style>
+
+body {
+  margin: 0;
+  background: #0f1115;
+  color: #f2f2f2;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+.subtitle {
+  color: #b5b5b5;
+  margin-top: 8px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+/* 左播放器 */
+.player-box {
+  background: #1a1d24;
+  border-radius: 16px;
+  padding: 16px;
+}
+
+#player {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+}
+
+.now-playing {
+  margin-top: 12px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* 提示文字 */
+.notice {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #c7c7c7;
+  line-height: 1.6;
+}
+
+/* 右側 */
+.song-list {
+  background: #1a1d24;
+  border-radius: 16px;
+  padding: 16px;
+  max-height: 700px;
+  overflow-y: auto;
+}
+
+/* 卡片 */
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #242933;
+  padding: 10px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.card:hover {
+  background: #323847;
+}
+
+/* 紫色高亮 */
+.card.active {
+  background: #2f2a3f;
+  border: 1px solid #b46bff;
+  box-shadow: 0 0 12px rgba(180, 107, 255, 0.35);
+}
+
+/* 左區 */
+.card-left {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* 縮圖 */
+.thumb {
+  width: 80px;
+  height: 45px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+/* 文字 */
+.card-title {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.card-sub {
+  font-size: 12px;
+  color: #b5b5b5;
+}
+
+.card-time {
+  font-size: 12px;
+  color: #888;
+  margin-top: 4px;
+}
+
+/* YouTube icon button */
+.yt-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  opacity: 0.85;
+  transition: 0.2s;
+}
+
+.yt-btn:hover {
+  opacity: 1;
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 6px rgba(180, 107, 255, 0.6));
+}
+
+.yt-btn img {
+  width: 26px;
+  height: 26px;
+}
+
+/* 手機版 */
+@media (max-width: 768px) {
+
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="header">
+
+    <div class="title">
+      🎤 【晚間電台】首度百老匯歌回 ｜ 為了這天我斥資買下了整座表演廳跟貴貴器材 【紫羅傘雨夜／芥川組】
+    </div>
+
+    <div class="subtitle">
+      PRISM Musical Archive
+    </div>
+
+  </div>
+
+  <div class="layout">
+
+    <!-- 左播放器 -->
+    <div class="player-box">
+
+      <div id="player"></div>
+
+      <div class="now-playing" id="nowTitle">
+        🎵 點擊右側卡片播放
+      </div>
+
+      <div class="notice">
+        ⚠️ 點擊卡片 → 左側播放<br/>
+        ⚠️ 點擊 YouTube 圖示 → 直接跳轉 YouTube（含時間點）
+      </div>
+
+    </div>
+
+    <!-- 右歌單 -->
+    <div class="song-list" id="list"></div>
+
+  </div>
+
+</div>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+
+<script>
+
+const data = {
+
+  videoId: "70NZII5vs9I",
+
+  songs: [
+
+    {
+      title:"歌劇魅影 The Phantom of the Opera",
+      artist:"Andrew Lloyd Webber",
+      time:125
+    },
+
+    {
+      title:"卡門 Carmen",
+      artist:"Georges Bizet",
+      time:1092
+    },
+
+    {
+      title:"貓 Memory",
+      artist:"Elaine Paige",
+      time:1798
+    },
+
+    {
+      title:"小美人魚 Under the Sea",
+      artist:"Samuel E. Wright",
+      time:2700
+    },
+
+    {
+      title:"綠野仙蹤 Over the Rainbow",
+      artist:"Judy Garland",
+      time:3285
+    },
+
+    {
+      title:"Dancing Queen",
+      artist:"ABBA",
+      time:4348
+    },
+
+    {
+      title:"悲慘世界 I Dreamed a Dream",
+      artist:"Patti LuPone",
+      time:5408
+    },
+
+    {
+      title:"獅子王 Circle of Life",
+      artist:"Carmen Twillie",
+      time:6163
+    },
+
+    {
+      title:"阿拉丁 A Whole New World",
+      artist:"Brad Kane & Lea Salonga",
+      time:7025
+    },
+
+    {
+      title:"真善美 Lonely Goatherd",
+      artist:"瑪利亞&七個孩子",
+      time:7753
+    },
+
+    {
+      title:"真善美 Edelweiss",
+      artist:"Christopher Plummer",
+      time:8360
+    },
+
+    {
+      title:"歌喉讚2 Flashlight",
+      artist:"Jessie J",
+      time:8993
+    },
+
+    {
+      title:"暮色回響",
+      artist:"張碧晨&李承鉉",
+      time:9786
+    },
+
+    {
+      title:"雨愛",
+      artist:"楊丞琳",
+      time:10198
+    }
+
+  ]
+
+};
+
+let player;
+
+function onYouTubeIframeAPIReady() {
+
+  player = new YT.Player('player', {
+
+    videoId: data.videoId,
+
+    playerVars: {
+      autoplay: 0,
+      rel: 0
+    }
+
+  });
+
+}
+
+const list = document.getElementById("list");
+const nowTitle = document.getElementById("nowTitle");
+
+function formatTime(s) {
+
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+
+}
+
+function setActive(index) {
+
+  document.querySelectorAll(".card").forEach((el, i) => {
+    el.classList.toggle("active", i === index);
+  });
+
+}
+
+function playSong(song, index) {
+
+  nowTitle.innerText = `🎵 ${song.title} - ${song.artist}`;
+
+  setActive(index);
+
+  if (player) {
+
+    player.seekTo(song.time, true);
+    player.playVideo();
+
+  }
+
+}
+
+function openYT(song) {
+
+  const url =
+    `https://www.youtube.com/watch?v=${data.videoId}&t=${song.time}s`;
+
+  window.open(url, "_blank");
+
+}
+
+data.songs.forEach((song, index) => {
+
+  const div = document.createElement("div");
+
+  div.className = "card";
+
+  div.innerHTML = `
+
+    <div class="card-left">
+
+      <img class="thumb"
+        src="https://img.youtube.com/vi/${data.videoId}/hqdefault.jpg" />
+
+      <div>
+
+        <div class="card-title">
+          🎵 ${song.title}
+        </div>
+
+        <div class="card-sub">
+          ${song.artist}
+        </div>
+
+        <div class="card-time">
+          ${formatTime(song.time)}
+        </div>
+
+      </div>
+
+    </div>
+
+    <button class="yt-btn">
+      <img src="https://www.iconpacks.net/icons/2/free-youtube-logo-icon-2431-thumb.png" />
+    </button>
+
+  `;
+
+  // 左側播放
+  div.onclick = () => playSong(song, index);
+
+  // YouTube跳轉
+  div.querySelector(".yt-btn").onclick = (e) => {
+
+    e.stopPropagation();
+    openYT(song);
+
+  };
+
+  list.appendChild(div);
+
+});
+
+</script>
+
+</body>
+</html>
